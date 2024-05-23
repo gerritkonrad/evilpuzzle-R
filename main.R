@@ -14,7 +14,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncolumn = 10, includeWord = TRU
 evilPuzzel()
 
 
-foundWordInVector <- function(word, vector) {
+findWordInVector <- function(word, vector) {
   j <- 1
   for (i in 1:length(vector)) {
     if (vector[i] == word[j]) {
