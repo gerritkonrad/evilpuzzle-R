@@ -1,13 +1,36 @@
 
-evilPuzzel <- function(word = 'mein', nrow=10, ncolumn=10, includeWord=TRUE){
+evilPuzzel <- function(word = 'mein', nrow = 10, ncolumn = 10, includeWord = TRUE){
   # Convert word in vector
-  word <- strsplit(word, split = "")[[1]] # Returns a list
+  letters <- strsplit(word, split = "")[[1]] # Returns a list
   
   sampleSize <- nrow * ncolumn
-  matrix <- matrix(sample(word, size=sampleSize, replace=TRUE), 
+  
+  matrix <- matrix(sample(letters, size = sampleSize, replace = TRUE), 
                    nrow=nrow, 
                    ncol=ncolumn
             )
 }
 
 evilPuzzel()
+
+
+foundWordInVector <- function(word, vector) {
+  j <- 1
+  for (i in 1:length(vector)) {
+    if (vector[i] == word[j]) {
+      j <- j + 1
+      if (j > length(word)) {
+        # Word found!
+        return(TRUE)
+      }
+    }else{
+      # Reset because letter does not match letter of word
+      j <- 1 
+    }
+  }
+  return(FALSE)
+}
+
+
+
+
