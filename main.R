@@ -21,13 +21,9 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     
     # Check rows 
     for (i in 1:nrow) {
-      # Check in row
-      if (findWordInVector(letters, matx[i, ])) {
-        matx[i, ] <- sample(letters, ncol, replace = TRUE)
-        wordFound <- TRUE
-      }
-      # Check in reverse
-      if (findWordInVector(letters, rev(matx[i, ]))) {
+      if (findWordInVector(letters, matx[i, ]) ||   # Check in row
+          findWordInVector(letters, rev(matx[i, ])) # Check in reverse
+      ){
         matx[i, ] <- sample(letters, ncol, replace = TRUE)
         wordFound <- TRUE
       }
@@ -35,13 +31,9 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     
     # Check columns
     for (i in 1:ncol) {
-      # Check in column
-      if (findWordInVector(letters, matx[, i])) {
-        matx[, i] <- sample(letters, nrow, replace = TRUE)
-        wordFound <- TRUE
-      }
-      # Check in reverse
-      if (findWordInVector(letters, rev(matx[, i]))) {
+      if (findWordInVector(letters, matx[, i]) ||   # Check in column
+          findWordInVector(letters, rev(matx[, i])) # Check in reverse
+      ){
         matx[, i] <- sample(letters, nrow, replace = TRUE)
         wordFound <- TRUE
       }
@@ -50,6 +42,17 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     # Check diagonal 
     
     # Check reverse diagonal
+  }
+  
+  # If word should be included, insert it randomly
+  if(includeWord == TRUE){
+    # Randomly choose direction 
+    direction <- sample(c("horizontal", "vertical", "diagonal"), 1)
+    
+    # Randomly choose reversed or not
+    reversed <- sample(c(TRUE, FALSE), 1)
+    
+    
   }
   
   return(matx)
