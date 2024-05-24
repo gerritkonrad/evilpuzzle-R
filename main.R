@@ -9,36 +9,28 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
                    nrow=nrow, 
                    ncol=ncol
             )
-  
+
   # Check rows 
   for (i in 1:nrow) {
+    # Check in row
     if (findWordInVector(letters, matrix[i, ])) {
-      # Resample the row
+      matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+    }
+    # Check in reverse
+    if (findWordInVector(letters, rev(matrix[i, ]))) {
       matrix[i, ] <- sample(letters, ncol, replace = TRUE)
     }
   }
   
   # Check columns
   for (i in 1:ncol) {
+    # Check in column
     if (findWordInVector(letters, matrix[, i])) {
-      # Resample the column
-      matrix[i, ] <- sample(letters, nrow, replace = TRUE)
+      matrix[, i] <- sample(letters, nrow, replace = TRUE)
     }
-  }
-  
-  # Check reverse rows
-  for (i in 1:nrow) {
-    if (findWordInVector(letters, rev(matrix[i, ]))) {
-      # Resample the row
-      matrix[i, ] <- sample(letters, ncol, replace = TRUE)
-    }
-  }
-  
-  # Check reverse columns
-  for (i in 1:ncol) {
+    # Check in reverse
     if (findWordInVector(letters, rev(matrix[, i]))) {
-      # Resample the column
-      matrix[i, ] <- sample(letters, nrow, replace = TRUE)
+      matrix[, i] <- sample(letters, ncol, replace = TRUE)
     }
   }
   
