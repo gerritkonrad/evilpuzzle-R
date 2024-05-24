@@ -2,6 +2,10 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   # Convert word in vector
   letters <- strsplit(word, split = "")[[1]] # Returns a list
   
+  if (length(unique(letters)) < 3) {
+    stop("Word must contain at least 3 unique characters!")
+  }
+  
   sampleSize <- nrow * ncol
   
   matrix <- matrix(sample(letters, size = sampleSize, replace = TRUE), 
