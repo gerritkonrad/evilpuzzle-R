@@ -8,7 +8,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   
   sampleSize <- nrow * ncol
   
-  matrix <- matrix(sample(letters, size = sampleSize, replace = TRUE), 
+  matx <- matrix(sample(letters, size = sampleSize, replace = TRUE), 
                    nrow=nrow, 
                    ncol=ncol
             )
@@ -22,13 +22,13 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     # Check rows 
     for (i in 1:nrow) {
       # Check in row
-      if (findWordInVector(letters, matrix[i, ])) {
-        matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+      if (findWordInVector(letters, matx[i, ])) {
+        matx[i, ] <- sample(letters, ncol, replace = TRUE)
         wordFound <- TRUE
       }
       # Check in reverse
-      if (findWordInVector(letters, rev(matrix[i, ]))) {
-        matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+      if (findWordInVector(letters, rev(matx[i, ]))) {
+        matx[i, ] <- sample(letters, ncol, replace = TRUE)
         wordFound <- TRUE
       }
     }
@@ -36,13 +36,13 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     # Check columns
     for (i in 1:ncol) {
       # Check in column
-      if (findWordInVector(letters, matrix[, i])) {
-        matrix[, i] <- sample(letters, nrow, replace = TRUE)
+      if (findWordInVector(letters, matx[, i])) {
+        matx[, i] <- sample(letters, nrow, replace = TRUE)
         wordFound <- TRUE
       }
       # Check in reverse
-      if (findWordInVector(letters, rev(matrix[, i]))) {
-        matrix[, i] <- sample(letters, nrow, replace = TRUE)
+      if (findWordInVector(letters, rev(matx[, i]))) {
+        matx[, i] <- sample(letters, nrow, replace = TRUE)
         wordFound <- TRUE
       }
     }
@@ -52,7 +52,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     # Check reverse diagonal
   }
   
-  matrix
+  return(matx)
 }
 
 findWordInVector <- function(word, vector) {
