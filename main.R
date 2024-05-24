@@ -1,4 +1,3 @@
-
 evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   # Convert word in vector
   letters <- strsplit(word, split = "")[[1]] # Returns a list
@@ -9,34 +8,45 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
                    nrow=nrow, 
                    ncol=ncol
             )
-
-  # Check rows 
-  for (i in 1:nrow) {
-    # Check in row
-    if (findWordInVector(letters, matrix[i, ])) {
-      matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+  
+  wordFound <- TRUE
+  
+  # Check until the word is no longer in the matrix
+  while(wordFound == TRUE){
+    wordFound <- FALSE
+    
+    # Check rows 
+    for (i in 1:nrow) {
+      # Check in row
+      if (findWordInVector(letters, matrix[i, ])) {
+        matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+        wordFound <- TRUE
+      }
+      # Check in reverse
+      if (findWordInVector(letters, rev(matrix[i, ]))) {
+        matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+        wordFound <- TRUE
+      }
     }
-    # Check in reverse
-    if (findWordInVector(letters, rev(matrix[i, ]))) {
-      matrix[i, ] <- sample(letters, ncol, replace = TRUE)
+    
+    # Check columns
+    for (i in 1:ncol) {
+      # Check in column
+      if (findWordInVector(letters, matrix[, i])) {
+        matrix[, i] <- sample(letters, nrow, replace = TRUE)
+        wordFound <- TRUE
+      }
+      # Check in reverse
+      if (findWordInVector(letters, rev(matrix[, i]))) {
+        matrix[, i] <- sample(letters, ncol, replace = TRUE)
+        wordFound <- TRUE
+      }
     }
+    
+    # Check diagonal 
+    
+    # Check reverse diagonal
   }
-  
-  # Check columns
-  for (i in 1:ncol) {
-    # Check in column
-    if (findWordInVector(letters, matrix[, i])) {
-      matrix[, i] <- sample(letters, nrow, replace = TRUE)
-    }
-    # Check in reverse
-    if (findWordInVector(letters, rev(matrix[, i]))) {
-      matrix[, i] <- sample(letters, ncol, replace = TRUE)
-    }
-  }
-  
-  # Check diagonal 
-  
-  # Check reverse diagonal
   
   matrix
 }
