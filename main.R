@@ -42,7 +42,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
       }
       # Check in reverse
       if (findWordInVector(letters, rev(matrix[, i]))) {
-        matrix[, i] <- sample(letters, ncol, replace = TRUE)
+        matrix[, i] <- sample(letters, nrow, replace = TRUE)
         wordFound <- TRUE
       }
     }
