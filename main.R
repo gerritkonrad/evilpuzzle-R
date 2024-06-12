@@ -5,7 +5,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   if (length(unique(letters)) < 3) {
     stop("Word must contain at least 3 unique characters!")
   }
-  set.seed(42)
+  
   matx <- matrix(sample(letters, size = nrow * ncol, replace = TRUE), 
                  nrow=nrow, 
                  ncol=ncol)
@@ -18,14 +18,14 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
       
     for(i in 1:nrow){
       for(j in 1:ncol){
-        endIndexCol = (j-1 + wordLength)
-        endIndexRow = (i-1 + wordLength)
+        endIndexCol <- (j-1 + wordLength)
+        endIndexRow <- (i-1 + wordLength)
         
         # Check columns
         if(endIndexCol <= ncol){
           segment <- matx[i, j:endIndexCol]
           if (identical(segment, letters) || identical(rev(segment), letters)) {
-            matx[i, j:endIndexCol] = sample(letters, wordLength, replace = TRUE)
+            matx[i, j:endIndexCol] <- sample(letters, wordLength, replace = TRUE)
             wordFound <- TRUE
             wordCount <- wordCount + 1
           }
@@ -35,7 +35,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
         if(endIndexRow <= nrow){
           segment <- matx[i:endIndexRow, j]
           if (identical(segment, letters) || identical(rev(segment), letters)) {
-            matx[i:endIndexRow, j] = sample(letters, wordLength, replace = TRUE)
+            matx[i:endIndexRow, j] <- sample(letters, wordLength, replace = TRUE)
             wordFound <- TRUE
             wordCount <- wordCount + 1
           }
@@ -46,7 +46,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
           segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j + k])
           if (identical(segment, letters) || identical(rev(segment), letters)) {
             for(k in 0:(wordLength - 1)){
-              matx[i + k, j + k] = sample(letters, 1)
+              matx[i + k, j + k] <- sample(letters, 1)
             }
             wordFound <- TRUE
             wordCount <- wordCount + 1
@@ -58,7 +58,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
           segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j - k])
           if (identical(segment, letters) || identical(rev(segment), letters)) {
             for(k in 0:(wordLength - 1)){
-              matx[i + k, j - k] = sample(letters, 1)
+              matx[i + k, j - k] <- sample(letters, 1)
             }
             wordFound <- TRUE
             wordCount <- wordCount + 1
