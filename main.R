@@ -21,7 +21,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
         endIndexCol = (j-1 + wordLength)
         endIndexRow = (i-1 + wordLength)
         
-        # Check rows
+        # Check columns
         if(endIndexCol <= ncol){
           segment <- matx[i, j:endIndexCol]
           if (identical(segment, letters) || identical(rev(segment), letters)) {
@@ -31,7 +31,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
           }
         }
         
-        # Check columns
+        # Check rows
         if(endIndexRow <= nrow){
           segment <- matx[i:endIndexRow, j]
           if (identical(segment, letters) || identical(rev(segment), letters)) {
