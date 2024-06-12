@@ -5,7 +5,7 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   if (length(unique(letters)) < 3) {
     stop("Word must contain at least 3 unique characters!")
   }
-  
+  set.seed(42)
   matx <- matrix(sample(letters, size = nrow * ncol, replace = TRUE), 
                  nrow=nrow, 
                  ncol=ncol)
@@ -16,59 +16,58 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   while (wordFound) {
     wordFound <- FALSE
       
-    # Check rows
-    for (i in 1:nrow(matx)) {
-      for (j in 1:(ncol(matx) - wordLength + 1)) {
-        endIndex = (j-1 + wordLength)
-        segment <- matx[i, j:endIndex]
-        if (identical(segment, letters) || identical(rev(segment), letters)) {
-          matx[i, j:endIndex] = sample(letters, wordLength, replace = TRUE)
-          wordFound <- TRUE
-          wordCount <- wordCount + 1
-        }
-      }
-    }
-    
-    # Check columns
-    for (i in 1:ncol(matx)) {
-      for (j in 1:(nrow(matx) - wordLength + 1)) {
-        endIndex = (j-1 + wordLength)
-        segment <- matx[j:endIndex, i]
-        if (identical(segment, letters) || identical(rev(segment), letters)) {
-          matx[j:endIndex, i] = sample(letters, wordLength, replace = TRUE)
-          wordFound <- TRUE
-          wordCount <- wordCount + 1
-        }
-      }
-    }
-    
-    # Check diagonals from top left to bottom right
-    for (i in 1:(nrow(matx) - wordLength + 1)) {
-      for (j in 1:(ncol(matx) - wordLength + 1)) {
-        segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j + k])
-        if (identical(segment, letters) || identical(rev(segment), letters)) {
-          for(k in 0:(wordLength - 1)){
-            matx[i + k, j + k] = sample(letters, 1)
+    for(i in 1:nrow){
+      for(j in 1:ncol){
+        endIndexCol = (j-1 + wordLength)
+        endIndexRow = (i-1 + wordLength)
+        
+        # Check rows
+        if(endIndexCol <= ncol){
+          segment <- matx[i, j:endIndexCol]
+          if (identical(segment, letters) || identical(rev(segment), letters)) {
+            matx[i, j:endIndexCol] = sample(letters, wordLength, replace = TRUE)
+            wordFound <- TRUE
+            wordCount <- wordCount + 1
           }
-          wordFound <- TRUE
-          wordCount <- wordCount + 1
         }
+        
+        # Check columns
+        if(endIndexRow <= nrow){
+          segment <- matx[i:endIndexRow, j]
+          if (identical(segment, letters) || identical(rev(segment), letters)) {
+            matx[i:endIndexRow, j] = sample(letters, wordLength, replace = TRUE)
+            wordFound <- TRUE
+            wordCount <- wordCount + 1
+          }
+        }
+        
+        # Check diagonals from top left to bottom right
+        if(endIndexCol <= ncol && endIndexRow <= nrow){
+          segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j + k])
+          if (identical(segment, letters) || identical(rev(segment), letters)) {
+            for(k in 0:(wordLength - 1)){
+              matx[i + k, j + k] = sample(letters, 1)
+            }
+            wordFound <- TRUE
+            wordCount <- wordCount + 1
+          }
+        }
+        
+        # Check diagonals from top right to bottom left
+        if (endIndexRow <= nrow && j >= wordLength){
+          segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j - k])
+          if (identical(segment, letters) || identical(rev(segment), letters)) {
+            for(k in 0:(wordLength - 1)){
+              matx[i + k, j - k] = sample(letters, 1)
+            }
+            wordFound <- TRUE
+            wordCount <- wordCount + 1
+          }
+        }
+        
       }
     }
     
-    # Check diagonals from top right to bottom left
-    for (i in 1:(nrow(matx) - wordLength + 1)) {
-      for (j in wordLength:ncol(matx)) {
-        segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j - k])
-        if (identical(segment, letters) || identical(rev(segment), letters)) {
-          for(k in 0:(wordLength - 1)){
-            matx[i + k, j - k] = sample(letters, 1)
-          }
-          wordFound <- TRUE
-          wordCount <- wordCount + 1
-        }
-      }
-    }
   }
   
   if (includeWord) {
