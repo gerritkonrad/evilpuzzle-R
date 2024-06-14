@@ -6,6 +6,10 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
     stop("Word must contain at least 3 unique characters!")
   }
   
+  if(wordLength > nrow || wordLength > ncol){
+    stop("Word does not fit in matrix!")
+  }
+  
   matx <- matrix(sample(letters, size = nrow * ncol, replace = TRUE), 
                  nrow=nrow, 
                  ncol=ncol)
@@ -42,24 +46,20 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
         }
         
         # Check diagonals from top left to bottom right
-        if(endIndexCol <= ncol && endIndexRow <= nrow){
-          segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j + k])
+        if(endIndexRow <= nrow && endIndexCol <= ncol){
+          segment <- diag(matx[i:endIndexRow, j:endIndexCol])
           if (identical(segment, letters) || identical(rev(segment), letters)) {
-            for(k in 0:(wordLength - 1)){
-              matx[i + k, j + k] <- sample(letters, 1)
-            }
+            diag(matx[i:endIndexRow, j:endIndexCol]) <- sample(letters, wordLength, replace = TRUE)
             wordFound <- TRUE
             wordCount <- wordCount + 1
           }
         }
-        
+
         # Check diagonals from top right to bottom left
         if (endIndexRow <= nrow && j >= wordLength){
-          segment <- sapply(0:(wordLength - 1), function(k) matx[i + k, j - k])
+          segment <- diag(matx[i:endIndexRow, j:(j+1 - wordLength)])
           if (identical(segment, letters) || identical(rev(segment), letters)) {
-            for(k in 0:(wordLength - 1)){
-              matx[i + k, j - k] <- sample(letters, 1)
-            }
+            diag(matx[i:endIndexRow, j:(j+1 - wordLength)]) <- sample(letters, wordLength, replace = TRUE)
             wordFound <- TRUE
             wordCount <- wordCount + 1
           }
@@ -104,4 +104,4 @@ evilPuzzel <- function(word = 'mein', nrow = 10, ncol = 10, includeWord = TRUE){
   return(matx)
 }
 
-evilPuzzel()
+evilPuzzel('dog', 15, 10)
